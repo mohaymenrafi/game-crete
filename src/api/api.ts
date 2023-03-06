@@ -1,4 +1,4 @@
-import { getDay, getMonth, getYear } from "./utils/getTime";
+import { getDay, getMonth, getYear } from "../utils/getTime";
 
 const currDay = getDay();
 const currMonth = getMonth();
@@ -11,8 +11,7 @@ const currentDate = `${currYear}-${currMonth}-${currDay}`;
 const lastYear = `${currYear - 1}-${currMonth}-${currDay}`;
 const nextYear = `${currYear + 1}-${currMonth}-${currDay}`;
 
-// popular games
-//Popular Games
+// Popular Games
 const popular_games = `games?dates=${lastYear},${currentDate}&ordering=-rating&page_size=10&key=${process.env.RAWG_API_KEY}`;
 const upcoming_games = `games?dates=${currentDate},${nextYear}&ordering=-added&page_size=10&key=${process.env.RAWG_API_KEY}`;
 const newGames = `games?dates=${lastYear},${currentDate}&ordering=-released&page_size=10&key=${process.env.RAWG_API_KEY}`;
