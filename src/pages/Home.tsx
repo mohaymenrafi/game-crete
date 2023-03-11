@@ -1,8 +1,15 @@
 import { motion } from "framer-motion";
 import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import Game from "../components/Game";
+import GameDetails from "../components/GameDetails";
+import {
+	getGameDetails,
+	getGameScreenshots,
+	selectDetails,
+} from "../features/details/detailsReducer";
 import {
 	getNewGames,
 	getPopoularProducts,
@@ -12,6 +19,8 @@ import {
 
 export default function Home() {
 	const dispatch = useAppDispatch();
+	const location = useLocation();
+	const pathId = location.pathname.split("/")[2];
 	const { popularGames, newGames, upcoming } = useAppSelector(selectGames);
 
 	useEffect(() => {
@@ -29,8 +38,10 @@ export default function Home() {
 		loadNewGames();
 		loadUpcomingGames();
 	}, [dispatch]);
+
 	return (
 		<GameList>
+			{pathId && <GameDetails />}
 			<h2>Upcoming Games</h2>
 			<Games>
 				{upcoming.map((item) => (

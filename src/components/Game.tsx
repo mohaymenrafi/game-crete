@@ -2,6 +2,12 @@ import { FC } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { CardInfo } from "../types/gameInfo";
+import { useAppDispatch } from "../app/hooks";
+import {
+	getGameDetails,
+	getGameScreenshots,
+} from "../features/details/detailsReducer";
+import { Link } from "react-router-dom";
 
 // interface IProps {
 // 	name: string;
@@ -12,11 +18,19 @@ import { CardInfo } from "../types/gameInfo";
 
 const Game: FC<CardInfo> = ({ name, id, img, released }) => {
 	// console.log(item);
+	const dispatch = useAppDispatch();
+	const handleLoadDetails = async (id: number) => {
+		await dispatch(getGameDetails(id));
+		await dispatch(getGameScreenshots(id));
+		document.body.style.overflow = "hidden";
+	};
 	return (
-		<StyledGame>
-			<h3>{name}</h3>
-			<p>{released}</p>
-			<img src={img} alt="background" />
+		<StyledGame onClick={() => handleLoadDetails(id)}>
+			<Link to={`/game/${id}`}>
+				<h3>{name}</h3>
+				<p>{released}</p>
+				<img src={img} alt="background" />
+			</Link>
 		</StyledGame>
 	);
 };

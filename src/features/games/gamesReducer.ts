@@ -75,7 +75,8 @@ export const getUpcomingGames = createAsyncThunk(
 					released: item.released,
 				};
 			});
-			return trimmedData;
+			// return response.data.results as CardInfo[];
+			return trimmedData as CardInfo[];
 		} catch (error: any) {
 			if (!error.response) {
 				throw error;
