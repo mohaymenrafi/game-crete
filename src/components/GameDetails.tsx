@@ -1,10 +1,28 @@
 import { motion } from "framer-motion";
+import { BallTriangle } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
+import { FC } from "react";
 import styled from "styled-components";
 import { useAppSelector } from "../app/hooks";
 import { selectDetails } from "../features/details/detailsReducer";
+import { resizedImg } from "../utils/resizedImage";
 
-const GameDetails = () => {
+//images
+import playstation from "../img/playstation.svg";
+import steam from "../img/steam.svg";
+import xbox from "../img/xbox.svg";
+import nintendo from "../img/nintendo.svg";
+import apple from "../img/apple.svg";
+import gamepad from "../img/gamepad.svg";
+//Star Images
+import starEmpty from "../img/star-empty.png";
+import starFull from "../img/star-full.png";
+
+interface IProps {
+	pathId: string;
+}
+
+const GameDetails: FC<IProps> = ({ pathId }) => {
 	const { details, screenshots, loading } = useAppSelector(selectDetails);
 	const nagivate = useNavigate();
 
@@ -16,36 +34,98 @@ const GameDetails = () => {
 		}
 	};
 
+	//Get Stars
+	const getStars = () => {
+		const stars = [];
+		if (details) {
+			const rating = Math.floor(details.rating);
+			for (let i = 1; i <= 5; i++) {
+				if (i <= rating) {
+					stars.push(<img alt="star" key={i} src={starFull}></img>);
+				} else {
+					stars.push(<img alt="star" key={i} src={starEmpty}></img>);
+				}
+			}
+		}
+		return stars;
+	};
+
+	const getPlatform = (platform: string): string => {
+		switch (platform) {
+			case "Playstation 4":
+				return playstation;
+			case "Xbox One":
+				return xbox;
+			case "PC":
+				return steam;
+			case "Nintendo Switch":
+				return nintendo;
+			case "iOS":
+				return apple;
+			case "macOS":
+				return apple;
+			default:
+				return gamepad;
+		}
+	};
+
+	// if (loading) {
+	// 	return (
+	// 		<BallTriangle
+	// 			height={100}
+	// 			width={100}
+	// 			radius={5}
+	// 			color="#ff7676"
+	// 			ariaLabel="ball-triangle-loading"
+	// 			visible={true}
+	// 			wrapperStyle={{
+	// 				minHeight: "100vh",
+	// 				display: "flex",
+	// 				justifyContent: "center",
+	// 				alignItems: "center",
+	// 			}}
+	// 		/>
+	// 	);
+	// }
+
 	// TODO: make the loading to spinner
 
 	return (
-		<CardShadow className="details" onClick={handleExitDetails}>
-			<Detail>
-				{loading === "idle" ? (
-					<h2>Loading</h2>
-				) : (
-					<>
+		<>
+			{!loading && (
+				<CardShadow className="details" onClick={handleExitDetails}>
+					<Detail layoutId={pathId}>
 						<Stats>
 							<div className="rating">
-								<h3>{details?.name}</h3>
-								<p>Rating: {details?.rating}</p>
+								<motion.h3 layoutId={`title ${pathId}`}>
+									{details?.name}
+								</motion.h3>
+								<motion.p layoutId={`date ${pathId}`}>
+									Rating: {details?.rating}
+								</motion.p>
+								{getStars()}
 							</div>
 							<Info>
 								<h3>Platforms</h3>
 								<Platforms>
 									{details?.platforms.map((data) => (
-										// <img
-										//     alt={data.name}
-										//     key={data.id}
-										//     src={g}
-										// />
-										<h3 key={data.platform.id}>{data.platform.name}</h3>
+										<img
+											src={getPlatform(data.platform.name)}
+											key={data.platform.id}
+											alt={data.platform.name}
+										/>
 									))}
 								</Platforms>
 							</Info>
 						</Stats>
 						<Media>
-							<img src={details?.background_image} alt={details?.name} />
+							{details && (
+								<motion.img
+									layoutId={`img ${pathId}`}
+									src={resizedImg(details.background_image, 1280)}
+									alt={details?.name}
+								/>
+							)}
 						</Media>
 						<Description>
 							<p>{details?.description_raw}</p>
@@ -53,16 +133,16 @@ const GameDetails = () => {
 						<div className="gallery">
 							{screenshots.map((screen) => (
 								<GalleryImg
-									src={screen.image}
+									src={resizedImg(screen.image, 1280)}
 									key={screen.id}
 									alt={"screenshots"}
 								/>
 							))}
 						</div>
-					</>
-				)}
-			</Detail>
-		</CardShadow>
+					</Detail>
+				</CardShadow>
+			)}
+		</>
 	);
 };
 

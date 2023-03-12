@@ -8,13 +8,13 @@ import { ScreenShotType, DetailsInfoType } from "../../types/gameInfo";
 interface IinitState {
 	details: DetailsInfoType;
 	screenshots: ScreenShotType[];
-	loading: "idle" | "succeeded" | "rejected";
+	loading: boolean;
 }
 
 const initialState: IinitState = {
 	details: null,
 	screenshots: [],
-	loading: "idle",
+	loading: true,
 };
 
 export const getGameDetails = createAsyncThunk(
@@ -54,18 +54,18 @@ export const detailsSlice = createSlice({
 	extraReducers(builder) {
 		builder
 			.addCase(getGameDetails.pending, (state) => {
-				state.loading = "idle";
+				state.loading = true;
 			})
 			.addCase(getGameDetails.fulfilled, (state, action) => {
 				state.details = action.payload;
-				state.loading = "succeeded";
+				state.loading = true;
 			})
 			.addCase(getGameScreenshots.pending, (state) => {
-				state.loading = "idle";
+				state.loading = true;
 			})
 			.addCase(getGameScreenshots.fulfilled, (state, action) => {
 				state.screenshots = action.payload;
-				state.loading = "succeeded";
+				state.loading = false;
 			});
 	},
 });

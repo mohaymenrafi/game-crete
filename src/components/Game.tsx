@@ -8,6 +8,7 @@ import {
 	getGameScreenshots,
 } from "../features/details/detailsReducer";
 import { Link } from "react-router-dom";
+import { resizedImg } from "../utils/resizedImage";
 
 // interface IProps {
 // 	name: string;
@@ -24,12 +25,17 @@ const Game: FC<CardInfo> = ({ name, id, img, released }) => {
 		await dispatch(getGameScreenshots(id));
 		document.body.style.overflow = "hidden";
 	};
+	const stringID = id.toString();
 	return (
-		<StyledGame onClick={() => handleLoadDetails(id)}>
+		<StyledGame layoutId={stringID} onClick={() => handleLoadDetails(id)}>
 			<Link to={`/game/${id}`}>
-				<h3>{name}</h3>
-				<p>{released}</p>
-				<img src={img} alt="background" />
+				<motion.h3 layoutId={`title ${stringID}`}>{name}</motion.h3>
+				<motion.p layoutId={`date ${stringID}`}>{released}</motion.p>
+				<motion.img
+					layoutId={`img ${stringID}`}
+					src={resizedImg(img, 640)}
+					alt="background"
+				/>
 			</Link>
 		</StyledGame>
 	);

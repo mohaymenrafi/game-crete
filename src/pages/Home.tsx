@@ -1,5 +1,10 @@
-import { motion } from "framer-motion";
-import React, { useEffect } from "react";
+import {
+	motion,
+	AnimatePresence,
+	AnimateSharedLayout,
+	LayoutGroup,
+} from "framer-motion";
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
@@ -40,45 +45,49 @@ export default function Home() {
 	}, [dispatch]);
 
 	return (
-		<GameList>
-			{pathId && <GameDetails />}
-			<h2>Upcoming Games</h2>
-			<Games>
-				{upcoming.map((item) => (
-					<Game
-						key={item.id}
-						name={item.name}
-						id={item.id}
-						released={item.released}
-						img={item.img}
-					/>
-				))}
-			</Games>
-			<h2>Popular Games</h2>
-			<Games>
-				{popularGames.map((item) => (
-					<Game
-						key={item.id}
-						name={item.name}
-						id={item.id}
-						released={item.released}
-						img={item.img}
-					/>
-				))}
-			</Games>
-			<h2>New Games</h2>
-			<Games>
-				{newGames.map((item) => (
-					<Game
-						key={item.id}
-						name={item.name}
-						id={item.id}
-						released={item.released}
-						img={item.img}
-					/>
-				))}
-			</Games>
-		</GameList>
+		<LayoutGroup>
+			<GameList>
+				<AnimatePresence>
+					{pathId && <GameDetails pathId={pathId} />}
+				</AnimatePresence>
+				<h2>Upcoming Games</h2>
+				<Games>
+					{upcoming.map((item) => (
+						<Game
+							key={item.id}
+							name={item.name}
+							id={item.id}
+							released={item.released}
+							img={item.img}
+						/>
+					))}
+				</Games>
+				<h2>Popular Games</h2>
+				<Games>
+					{popularGames.map((item) => (
+						<Game
+							key={item.id}
+							name={item.name}
+							id={item.id}
+							released={item.released}
+							img={item.img}
+						/>
+					))}
+				</Games>
+				<h2>New Games</h2>
+				<Games>
+					{newGames.map((item) => (
+						<Game
+							key={item.id}
+							name={item.name}
+							id={item.id}
+							released={item.released}
+							img={item.img}
+						/>
+					))}
+				</Games>
+			</GameList>
+		</LayoutGroup>
 	);
 }
 
