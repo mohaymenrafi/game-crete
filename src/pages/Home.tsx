@@ -7,6 +7,7 @@ import {
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
+import { fadeIn } from "../animation/animate";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import Game from "../components/Game";
 import GameDetails from "../components/GameDetails";
@@ -26,7 +27,8 @@ export default function Home() {
 	const dispatch = useAppDispatch();
 	const location = useLocation();
 	const pathId = location.pathname.split("/")[2];
-	const { popularGames, newGames, upcoming } = useAppSelector(selectGames);
+	const { popularGames, newGames, upcoming, searchedGames } =
+		useAppSelector(selectGames);
 
 	useEffect(() => {
 		const loadPopularGames = async () => {
@@ -46,10 +48,26 @@ export default function Home() {
 
 	return (
 		<LayoutGroup>
-			<GameList>
+			<GameList variants={fadeIn} initial="hidden" animate="show">
 				<AnimatePresence>
 					{pathId && <GameDetails pathId={pathId} />}
 				</AnimatePresence>
+				{!!searchedGames.length && (
+					<>
+						<h2>Searched Games</h2>
+						<Games>
+							{searchedGames.map((item) => (
+								<Game
+									key={item.id}
+									name={item.name}
+									id={item.id}
+									released={item.released}
+									img={item.img}
+								/>
+							))}
+						</Games>
+					</>
+				)}
 				<h2>Upcoming Games</h2>
 				<Games>
 					{upcoming.map((item) => (

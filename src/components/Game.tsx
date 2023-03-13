@@ -9,6 +9,7 @@ import {
 } from "../features/details/detailsReducer";
 import { Link } from "react-router-dom";
 import { resizedImg } from "../utils/resizedImage";
+import { popup } from "../animation/animate";
 
 // interface IProps {
 // 	name: string;
@@ -27,7 +28,13 @@ const Game: FC<CardInfo> = ({ name, id, img, released }) => {
 	};
 	const stringID = id.toString();
 	return (
-		<StyledGame layoutId={stringID} onClick={() => handleLoadDetails(id)}>
+		<StyledGame
+			variants={popup}
+			initial="hidden"
+			animate="show"
+			layoutId={stringID}
+			onClick={() => handleLoadDetails(id)}
+		>
 			<Link to={`/game/${id}`}>
 				<motion.h3 layoutId={`title ${stringID}`}>{name}</motion.h3>
 				<motion.p layoutId={`date ${stringID}`}>{released}</motion.p>
