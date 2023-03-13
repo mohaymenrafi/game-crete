@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { BallTriangle } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 import { FC } from "react";
 import styled from "styled-components";
@@ -69,27 +68,6 @@ const GameDetails: FC<IProps> = ({ pathId }) => {
 		}
 	};
 
-	// if (loading) {
-	// 	return (
-	// 		<BallTriangle
-	// 			height={100}
-	// 			width={100}
-	// 			radius={5}
-	// 			color="#ff7676"
-	// 			ariaLabel="ball-triangle-loading"
-	// 			visible={true}
-	// 			wrapperStyle={{
-	// 				minHeight: "100vh",
-	// 				display: "flex",
-	// 				justifyContent: "center",
-	// 				alignItems: "center",
-	// 			}}
-	// 		/>
-	// 	);
-	// }
-
-	// TODO: make the loading to spinner
-
 	return (
 		<>
 			{!loading && (
@@ -108,7 +86,7 @@ const GameDetails: FC<IProps> = ({ pathId }) => {
 							<Info>
 								<h3>Platforms</h3>
 								<Platforms>
-									{details?.platforms.map((data) => (
+									{details?.platforms.slice(0, 4).map((data) => (
 										<img
 											src={getPlatform(data.platform.name)}
 											key={data.platform.id}
@@ -169,7 +147,10 @@ const CardShadow = styled(motion.div)`
 const Detail = styled(motion.div)`
 	width: 80%;
 	border-radius: 1rem;
-	padding: 2rem 5rem;
+	padding: 2rem 1rem;
+	@media (min-width: 760px) {
+		padding: 2rem 5rem;
+	}
 	background: white;
 	position: absolute;
 	left: 10%;
@@ -182,6 +163,10 @@ const Detail = styled(motion.div)`
 
 const Stats = styled(motion.div)`
 	display: flex;
+	flex-direction: column;
+	@media (min-width: 760px) {
+		flex-direction: row;
+	}
 	align-items: center;
 	justify-content: space-between;
 	img {
@@ -192,15 +177,16 @@ const Stats = styled(motion.div)`
 `;
 
 const Info = styled(motion.div)`
-	text-align: center;
+	text-align: left;
+	@media (min-width: 760px) {
+		text-align: center;
+	}
 `;
 
 const Platforms = styled(motion.div)`
 	display: flex;
-	justify-content: space-evenly;
-	img {
-		margin-left: 3rem;
-	}
+	align-items: center;
+	gap: 2rem;
 `;
 const Media = styled(motion.div)`
 	margin-top: 5rem;

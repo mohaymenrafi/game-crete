@@ -11,15 +11,7 @@ import { Link } from "react-router-dom";
 import { resizedImg } from "../utils/resizedImage";
 import { popup } from "../animation/animate";
 
-// interface IProps {
-// 	name: string;
-// 	id: number;
-// 	img: string;
-// 	released: string;
-// }
-
 const Game: FC<CardInfo> = ({ name, id, img, released }) => {
-	// console.log(item);
 	const dispatch = useAppDispatch();
 	const handleLoadDetails = async (id: number) => {
 		await dispatch(getGameDetails(id));
@@ -36,7 +28,12 @@ const Game: FC<CardInfo> = ({ name, id, img, released }) => {
 			onClick={() => handleLoadDetails(id)}
 		>
 			<Link to={`/game/${id}`}>
-				<motion.h3 layoutId={`title ${stringID}`}>{name}</motion.h3>
+				<motion.h3
+					style={{ paddingLeft: "10px", paddingRight: "10px" }}
+					layoutId={`title ${stringID}`}
+				>
+					{name}
+				</motion.h3>
 				<motion.p layoutId={`date ${stringID}`}>{released}</motion.p>
 				<motion.img
 					layoutId={`img ${stringID}`}

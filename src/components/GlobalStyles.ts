@@ -35,7 +35,10 @@ export const GlobalStyles = createGlobalStyle`
   p {
     line-height: 200%;
     color: #696969;
-    font-size: 1.2rem;
+    font-size: 1rem;
+    @media (min-width:760px) {
+      font-size: 1.2rem;
+    }
   }
   a {
     color: #333;
